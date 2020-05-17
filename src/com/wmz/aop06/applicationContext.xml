@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+    	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 为目标方法织入多个切面 -->
+    <!-- bean definition here -->
+   	<!-- 注册目标对象 -->
+    <bean name="someService" class="com.wmz.aop06.SomeServiceImpl" />
+    
+    <!-- 注册通知 -->
+    <bean name="myAfterAdvice" class="com.wmz.aop06.MyAfterReturningAdvice"/>
+    <!-- 注册通知 -->
+    <bean name="myBeforeAdvice" class="com.wmz.aop06.MyMethodBeforeAdvice"/>
+    
+    <!-- 生成代理对象 -->
+    <bean name="serviceProxy" 
+    	class="org.springframework.aop.framework.ProxyFactoryBean">
+    	<!-- 指定目标对象 -->
+    	<property name="target" ref="someService"/>
+    	<!-- <property name="targetName" value="someService"></property> -->
+    	<!-- 指定切面 -->
+    	<property name="interceptorNames" value="myAfterAdvice, myBeforeAdvice"/>
+    	<!-- <property name="interceptorNames">
+    		<array>
+    			<value>myAfterAdvice</value>
+    			<value>myBeforeAdvice</value>
+    		</array>
+    	</property> -->
+    </bean>
+
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+    	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 顾问 -->
+    <!-- 名称匹配方法切入点顾问 -->
+    <!-- 
+    	顾问是spring提供的另一种切面，可以完成更为复杂切面织入功能
+    	PointcutAadvisor是顾问的一种，可以指定具体的切入点，顾问
+    	将通知进行了包装，会根据不同的通知类型，在不同的时间点，将切面
+    	织入到不同的切入点。
+      -->
+    <!-- 只增强部分方法 -->
+    <!-- bean definition here -->
+   	<!-- 注册目标对象 -->
+    <bean name="someService" class="com.wmz.aop12.SomeServiceImpl" />
+    <bean name="someService2" class="com.wmz.aop12.SomeServiceImpl" />
+    
+    <!-- 注册通知 -->
+    <bean name="myAdvice" class="com.wmz.aop11.MyAfterReturningAdvice"/>
+    
+    <!-- 注册顾问 -->
+    <bean name="myAdvisor" 
+    	class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+    	<!-- 指定通知类型 -->
+    	<property name="advice" ref="myAdvice"/>
+    	<!-- 指定切入方法 -->
+    	<!-- <property name="mappedNames" value="doFirst, doSecond"/> -->
+    	<property name="mappedName" value="doFirst"/> <!-- 匹配的对象就是简单方法名 -->
+    </bean>
+    
+    <!-- 注册自动代理生成器 -->
+    <!-- BeanName自动代理生成器  -->
+    <!-- 可以选择要增强的目标对象
+                  切面可以是顾问或者通知 -->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    	<!-- 指定切入对象 -->
+    	<property name="beanNames" value="someService" />
+    	<property name="interceptorNames" value="myAdvisor" />
+    </bean>
+    
+</beans>

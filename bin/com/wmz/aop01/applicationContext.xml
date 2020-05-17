@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+    	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 前置通知 -->
+    <!-- bean definition here -->
+   	<!-- 注册目标对象 -->
+    <bean name="someService" class="com.wmz.aop01.SomeServiceImpl" />
+    
+    <!-- 注册通知 -->
+    <bean name="myAdvice" class="com.wmz.aop01.MyMethodBeforeAdvice"/>
+    
+    <!-- 生成代理对象 -->
+    <bean name="serviceProxy" 
+    	class="org.springframework.aop.framework.ProxyFactoryBean">
+    	<!-- 指定目标对象 -->
+    	<property name="target" ref="someService"/>
+    	<!-- <property name="targetName" value="someService"></property> -->
+    	<!-- 指定切面 -->
+    	<property name="interceptorNames" value="myAdvice"/>
+    </bean>
+
+</beans>
